@@ -1,7 +1,11 @@
+using backend.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
+builder.Services.AddSingleton<BandMemberService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -17,6 +21,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseCors("AllowFrontend");
+app.MapControllers();
 
 app.MapFallbackToFile("index.html");
 
@@ -25,7 +31,7 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/api/weatherforecast", () =>
 {
     var forecast =  Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast

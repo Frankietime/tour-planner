@@ -1,3 +1,4 @@
+using backend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,8 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddControllers();
+
+        services.AddSingleton<BandMemberService>();
         
         // Configurar CORS
         services.AddCors(options =>
