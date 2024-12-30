@@ -9,6 +9,19 @@ builder.Services.AddSingleton<BandMemberService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Configurar CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5173", "https://localhost:5173") // Cambia esto al puerto donde se sirve tu frontend
+                   .AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .AllowCredentials();
+        });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,7 +36,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseCors("AllowFrontend");
 app.MapControllers();
-
 app.MapFallbackToFile("index.html");
 
 var summaries = new[]
